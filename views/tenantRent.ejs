@@ -1,0 +1,46 @@
+<%-include("header") -%>
+<div class="outer-container">
+<div class="main-container">
+<h2>Rent details for: <%= tenantName%></h2>
+
+
+<table class="table table-dark table-hover table-striped table-bordered users-table ">
+    <thead class="bg-primary">
+        <tr>
+              <th>ID</th>
+            
+            <th >Flat type</th>
+        <th >Rent/Month</th>
+        <th>Month</th>
+        <th>Payment status:</th>
+        
+        </tr>
+    </thead>
+    <tbody >
+        <tr>
+            <td><%=tenantID %></td>
+            <td><%= flatType%></td>
+            <td><%= rentAmount%></td>
+            <td><%= month%></td>
+            <td>
+                <select class="dropdown form-control" name="paymentStatus" id="">
+                    <option value="paid">PAID</option>
+                
+                <option name="unpaid" id="">UNPAID</option>
+            </select>
+            <button class="btn btn-sm btn-info" >update</button>
+            </td>
+            
+           
+
+        </tr>
+       
+    </tbody>
+</table>
+
+
+
+</div>
+
+</div>
+<%-include("footer") -%>

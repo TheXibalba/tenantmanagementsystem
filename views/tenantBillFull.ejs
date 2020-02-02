@@ -1,0 +1,66 @@
+<%-include("header") -%>
+
+<h2>Bill Payment History For : <%= tenantName%> (ID: <%=tenantID %>)</h2>
+
+
+<table class="table table-dark table-hover table-striped table-bordered users-table ">
+    <thead class="bg-primary">
+        <tr>
+
+            <th>Month</th>
+            <th>Previous Reading</th>
+            <th>Current Reading</th>
+            <th>Rate/Unit</th>
+            <th>Taken On</th>
+            <th>Bill</th>
+            <th>Status</th>
+
+        </tr>
+    </thead>
+    <form action="/tenantBill" method="POST" id="billing-form">
+        <tbody>
+
+            <tr>
+
+
+                <td><%= month%></td>
+
+
+                <td>
+                    <%=prevREjs %>
+                </td>
+
+                <td>
+                    <%= currREjs %>
+                </td>
+                <td>
+                    <%= rateEjs %>
+                </td>
+
+                <td>
+                    <%= dateEjs %>
+                </td>
+
+                <td>
+
+                    <%= billOfMonth%>
+
+                </td>
+
+
+                <td>
+
+                    <%= paymentStatus %>
+
+                </td>
+
+
+
+            </tr>
+
+        </tbody>
+    </form>
+</table>
+
+</div>
+<%-include("footer") -%>
