@@ -105,9 +105,10 @@ app.post("/tenantAddTable",function(req,res){
     let flat_type;
     let contact_no;
     let agreedRent;
-    let ID=101;
+    let ID;
     let flatAllocationDate;
     
+    ID=req.body.ID;
     newUser=req.body.newTenantName;
     /* console.log("new user1: "+req.body.newTenantName); */
     
@@ -123,13 +124,13 @@ app.post("/tenantAddTable",function(req,res){
            flatId:ID,
            name:newUser,
            flatType:flat_type,
-           contactNo:contact_no,
+           contact:contact_no,
            startingDate:flatAllocationDate,
            agreedUponRent:agreedRent
 
        });
-     /*   console.log(newTenant);
-       console.log(req.body); */
+       /*  console.log(newTenant);
+       console.log(req.body);  */
        newTenant.save(function(err,tenant){
            if(err){
                console.log(err);
@@ -193,11 +194,24 @@ app.post("/tenantBill", function (req, res) {
     previousReading = Number(req.body.prevR);
     currentReading = Number(req.body.currR);
     ratePerUnit = Number(req.body.rate);
-
     finalBill = (currentReading - previousReading) * ratePerUnit;
 
 });
 
+
+
+app.get("/delete/:contactNo",function(req,res){
+    const c=req.params.contactNo;
+    console.log(c);
+Tenant.deleteOne({contact:c },function(err){
+    if(err){
+        console.log(err);
+    }else{
+        console.log("Deleted Successfully!");
+    }
+    res.redirect("/allUsers");
+});
+});
 
 app.listen(3000, function () {
     console.log("Server started on port 3000");

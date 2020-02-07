@@ -6,7 +6,7 @@
    <table class="table table-dark table-hover table-striped table-bordered users-table ">
       <thead class="bg-primary">
           <tr>
-                
+               <th>Flat No.</th> 
               <th>Name</th>
               <th>Flat Type</th>
               <th>Contact Details</th>
@@ -18,8 +18,14 @@
 <tbody>
 <tr>
 
+     <td> <input name="ID" class="form-control" type="number" placeholder="Flat no" > </td>
      <td> <input name="newTenantName" class="form-control" type="text" placeholder="Name" > </td>
-      <td> <input name="newFlatType" class="form-control" type="text" placeholder="Flat Type"> </td>
+      <td>   <select class="dropdown form-control" name="newFlatType">
+         <option value="1 BHK">1 BHK</option>
+     
+     <option value="2 BHK">2 BHK</option>
+     </select>
+      </td>
        <td><input name="newContact" class="form-control" type="number" placeholder="Contact No."> </td>
       
        <td><input name="allocationDate" class="form-control" type="date" placeholder="Date" ></td>

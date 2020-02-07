@@ -8,8 +8,9 @@
         <table class="table table-dark table-hover table-striped table-bordered users-table ">
             <thead class="bg-info">
                 <tr>
-                    <th>Sr No.</th>
+                    <th>Flat No.</th>
                     <th>Name</th>
+                    
                     <th>Flat Alloc Date</th>
                     <th>Rent Details</th>
                     <th>Bill Details</th>
@@ -19,10 +20,11 @@
             <tbody class="allusers-table">
                 <% receivedData.forEach(function(dataItem){ %>
                 <tr>
-                    <td><%= ID %></td>
-                    <td> <%= dataItem.name %><i class="fa fa-pencil-square  btn btn-sm btn-light edit-user"></i><i
-                            class="fas fa-trash btn btn-sm btn-danger del-user"></i></td>
-                            <td><%= dataItem.startingDate %></td>
+                    <td><%= dataItem.flatId %></td>
+                    <td> <%= dataItem.name %><i class="fa fa-phone btn btn-sm btn-light edit-user" data-toggle="tooltip" data-placement="right" title="<%= dataItem.contact %>"></i>
+                      <a href="delete/<%=  dataItem.contact %>"> <i  class="fas fa-trash btn btn-sm btn-danger del-user"></i></a> </td>
+                           
+                            <td><%= dataItem.startingDate %></td>  
                     <td><a href="tenantRent/<%=ID %> "><i class="fas fa-info-circle btn btn-sm btn-light"></i></a></td>
                     <td><a href="tenantBill/<%=ID %> "><i class="fas fa-info-circle btn btn-sm btn-light "></i></a></td>
                     </tr>
@@ -32,6 +34,7 @@
         </table>
 
         <a class="btn btn-md btn-outline-warning add-user" href="tenantAddTable"> Add New Tenant</a>
+        <a class="btn btn-md btn-outline-warning add-user" href="tenantAddTable"> Delete A Tenant</a>
 
     </div>
 </div>
