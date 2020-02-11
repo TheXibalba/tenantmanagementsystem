@@ -25,8 +25,8 @@
                       <a href="delete/<%=  dataItem.contact %>"> <i  class="fas fa-trash btn btn-sm btn-danger del-user"></i></a> </td>
                            
                             <td><%= dataItem.startingDate %></td>  
-                    <td><a href="tenantRent/<%=ID %> "><i class="fas fa-info-circle btn btn-sm btn-light"></i></a></td>
-                    <td><a href="tenantBill/<%=ID %> "><i class="fas fa-info-circle btn btn-sm btn-light "></i></a></td>
+                    <td><a href="tenantRent/<%=dataItem.flatId%>"><i class="fas fa-info-circle btn btn-sm btn-light"></i></a></td>
+                    <td><a href="tenantBillFull/<%=dataItem.flatId%>"><i class="fas fa-info-circle btn btn-sm btn-light "></i></a></td>
                     </tr>
                         <% }); %>
 
@@ -34,7 +34,7 @@
         </table>
 
         <a class="btn btn-md btn-outline-warning add-user" href="tenantAddTable"> Add New Tenant</a>
-        <a class="btn btn-md btn-outline-warning add-user" href="tenantAddTable"> Delete A Tenant</a>
+      
 
     </div>
 </div>

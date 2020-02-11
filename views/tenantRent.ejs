@@ -1,46 +1,115 @@
 <%-include("header") -%>
 <div class="outer-container">
-<div class="main-container">
-<h2>Rent details for: <%= tenantName%></h2>
+    <div class="main-container">
+        <h2>Rent History For: <%=tenantName%> (Flat No: <%=tenantID%>)</h2>
 
 
-<table class="table table-dark table-hover table-striped table-bordered users-table ">
-    <thead class="bg-primary">
-        <tr>
-              <th>ID</th>
+        <table class="table table-dark table-hover table-striped table-bordered users-table ">
+            <thead class="bg-primary">
+                <tr>
+                    <th>Month</th>
+                    <th>Rent Amt.</th>
+                    <th>Previous Dues</th>
+                    <th>Paid Amount</th>
+                    
+ 
+                    <th>Payment status:</th>
+
+                </tr>
+            </thead>
+            <tbody id="pa">
+             
+                <% receivedData.forEach(function(data){ %>
+
+                    <tr>
+
+
+                    <td>
+                        <%= data.month %>
+                    </td>
+                    <td><%=fixedRent%></td>
+
+                    <td > <%= data.pendingAmount %></td>
+                    <td> <%= data.paidAmount %></td>
+                    
+                   
+                    <td> <%= data.rentPaymentStatus %></td>
+
+
+                    </tr>
+
+               <% });%>
+               
+                    <tr>
+                        <form action="/tenantRent/<%= tenantID %>" method="POST">
+                        
+                            <td> <select name="rentMonth" class="dropdown form-control">
+                                <option value="Jan">January</option>
+                                <option value="Feb">February</option>
+                                <option value="Mar">March</option>
+                                <option value="Apr">April</option>
+                                <option value="May">May</option>
+                                <option value="Jun">June</option>
+                                <option value="Jul">July</option>
+                                <option value="Aug">August</option>
+                                <option value="Sep">September</option>
+                                <option value="Oct">October</option>
+                                <option value="Nov">November</option>
+                                <option value="Dec">December</option>
             
-            <th >Flat type</th>
-        <th >Rent/Month</th>
-        <th>Month</th>
-        <th>Payment status:</th>
-        
-        </tr>
-    </thead>
-    <tbody >
-        <tr>
-            <td><%=tenantID %></td>
-            <td><%= flatType%></td>
-            <td><%= rentAmount%></td>
-            <td><%= month%></td>
-            <td>
-                <select class="dropdown form-control" name="paymentStatus" id="">
-                    <option value="paid">PAID</option>
-                
-                <option name="unpaid" id="">UNPAID</option>
-            </select>
-            <button class="btn btn-sm btn-info" >update</button>
-            </td>
-            
-           
+                            </select> 
+                        </td> 
 
-        </tr>
-       
-    </tbody>
-</table>
+                        <td>
+                            <input class="form-control no-spin" type="number" name="fixedRent"  readonly value="<%= fixedRent %>" id="fixedRent">
+
+                        </td>
+                        <td>
+                            <input class="form-control no-spin" type="number" name="pendingRent"  readonly value="<%= pending %>" id="pendingRent" >
 
 
+                        </td>
+                        <td>
+                            <input class="form-control no-spin" type="number" name="paidAmount"  value="<%= paidAmount %> " id="paidAmount">
+                        </td>
+
+                       
+
+                        
+
+                        <td>
+                            <select class="dropdown form-control" name="paymentStatus">
+                                <option value="PAID">PAID</option>
+                            
+                            <option value="UNPAID">UNPAID</option>
+                            <option value="PARTIAL">PARTIAL</option>
+                            </select>
+                        </td>
+
+
+                        
+                        
+                        
+                        
+
+
+
+
+                    </tr>
+
+            </tbody>
+        </table>
+
+        <button class="btn btn-md btn-info" type="submit" >Update</button>
+    </form>
+
+    </div>
 
 </div>
 
-</div>
+<script defer>
+   
+
+</script>
+
 <%-include("footer") -%>

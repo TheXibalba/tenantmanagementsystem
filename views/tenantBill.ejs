@@ -8,7 +8,7 @@
     <thead class="thead bg-primary">
         <tr>
               
-        <th >Month</th>
+        <th>Month</th>
         <th>Previous Reading</th>
         <th>Current Reading</th>
         <th>Rate/Unit</th>
@@ -18,75 +18,17 @@
         
         </tr>
     </thead>
-    <form action="/tenantBill" method="POST" id="billing-form">
+    
     <tbody >
         
-        <tr>
-            
-          
-          <td><%= month%></td> 
-          
-          
-          <td>
-               <input type="number" placeholder="Previous Reading" name="prevR" id="prevR" class="form-control">
-           </td>
-
-           <td>
-            <input type="number" placeholder="Current Reading" name="currR" id="currR" class="form-control"> 
-        </td>
-        <td>
-            <input type="number" step="0.01" placeholder="Rate" name="rate" id="rate" class="form-control">
-        </td>
-
-        <td>
-            <input type="date" name="takenOn" class="form-control">
-        </td>
-           
-            <td>
-
-                <button onclick="displayBill()" id="calculate-bill" class="btn btn-md btn-outline-success" type="button">Calculate</button>
-               
-            </td>
-        
-     
-            <td>
-
-
-
-                
-                <select class="dropdown form-control" name="paymentStatus">
-                    <option value="paid">PAID</option>
-                
-                <option value="unpaid">UNPAID</option>
-                </select>
-        
-            
-            </td>
        
-           
 
-        </tr>
+
+        
        
     </tbody>
 </form>
 </table>
-<button class="btn btn-md btn-warning" type="button" onclick="window.location.href='/tenantBillFull'"> View Payment History</button>
-<button class="btn btn-md btn-info" type="submit" >Update</button>
-<script>
-function displayBill(){
-
-    var prev=document.querySelector("#prevR").value;
-    var curr=document.querySelector("#currR").value;
-    var rate=document.querySelector("#rate").value;
-    var changeButton= document.querySelector("#calculate-bill")
-    
-    changeButton.classList.remove("btn-outline-success");
-    changeButton.classList.add("btn-info");
-    changeButton.innerHTML=((curr-prev)*rate);
-    
-
-}
-</script>
 
 
 </div>

@@ -45,7 +45,7 @@ text-align: center;
   margin: 1% 0 0 8%;
 }
 .outer-container-login{
-  background-image: url("images/landing.jpg");
+  background-image: url("../images/landing.jpg");
   background-position: center;
   position: relative;
     text-align: center;
@@ -54,7 +54,17 @@ text-align: center;
 }
 
 .outer-container-allusers,.outer-container-tenant-add-table{
-  background-image: url("images/home.jpg");
+  background-image: url("../images/home.jpg");
+  background-position: center;
+  position: relative;
+ background-size: cover;
+    width: 100vw;
+    height: 100vh;
+}
+
+
+.outer-container-tenantBillFull{
+  background-image: url("../images/home.jpg");
   background-position: center;
   position: relative;
  background-size: cover;
@@ -71,6 +81,20 @@ text-align: center;
   background:rgba(0,0,0,0.7);
 
 }
+
+.outer-container-tenantBillFull::after {
+  content: '';
+  position: absolute;
+  width: 100vw; 
+  height:100vh;
+  top:0; left:0;
+  background:rgba(0,0,0,0.7);
+
+}
+
+
+
+
 table{
   text-align: center;
 }
@@ -141,6 +165,14 @@ table{
   text-align: center;
   z-index: 2;
 }
+
+.no-spin, .no-spin:hover, .no-spin:focus {
+  -webkit-appearance: none;
+  margin: 0;
+  -moz-appearance:textfield;
+}
+
+
 /* 
 .element:hover,
 .element:active {

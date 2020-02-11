@@ -1,6 +1,7 @@
 <%-include("header") -%>
-
-<h2>Bill Payment History For : <%= tenantName%> (ID: <%=tenantID %>)</h2>
+<div class="outer-container-tenantBillFull">
+    <div class="main-container">
+<h2>Bill Payment History For <%= name%> (Flat No: <%=tenantID %>): </h2>
 
 
 <table class="table table-dark table-hover table-striped table-bordered users-table ">
@@ -17,50 +18,127 @@
 
         </tr>
     </thead>
-    <form action="/tenantBill" method="POST" id="billing-form">
+    
+    <% receivedData.bill.forEach(function(data){ %>
+        <tr>
+
+            <td>
+                <%= data.month %>
+            </td>
+            
+            <td>
+                <%= data.prevReading %>
+            </td>
+
+            <td>
+                <%= data.currReading %>
+            </td>
+            
+            <td>
+                <%= data.rpu %>
+            </td>
+
+            <td>
+                <%= data.takenOnDate %>
+            </td>
+
+            <td>
+                <%= data.totalBill%>
+            </td>
+
+
+            <td>
+                <%= data.billPaymentStatus %>
+            </td>
+
+        </tr>
+<%});%>
+
+
         <tbody>
-
+           
             <tr>
+                <form action="/tenantBillFull/<%=tenantID%>" method="POST" id="billing-form">
+          
+                <td> <select name="billingMonth" class="dropdown form-control">
+                    <option value="Jan">January</option>
+                    <option value="Feb">February</option>
+                    <option value="Mar">March</option>
+                    <option value="Apr">April</option>
+                    <option value="May">May</option>
+                    <option value="Jun">June</option>
+                    <option value="Jul">July</option>
+                    <option value="Aug">August</option>
+                    <option value="Sep">September</option>
+                    <option value="Oct">October</option>
+                    <option value="Nov">November</option>
+                    <option value="Dec">December</option>
 
-
-                <td><%= month%></td>
-
-
+                </select> 
+            </td> 
+                
+                
                 <td>
-                    <%=prevREjs %>
-                </td>
-
-                <td>
-                    <%= currREjs %>
-                </td>
-                <td>
-                    <%= rateEjs %>
-                </td>
-
-                <td>
-                    <%= dateEjs %>
-                </td>
-
-                <td>
-
-                    <%= billOfMonth%>
-
-                </td>
-
-
-                <td>
-
-                    <%= paymentStatus %>
-
-                </td>
-
-
-
-            </tr>
-
+                     <input type="number" placeholder="Prev Reading" name="prevR" id="prevR" class="form-control">
+                 </td>
+      
+                 <td>
+                  <input type="number" placeholder="Curr Reading" name="currR" id="currR" class="form-control"> 
+              </td>
+              <td>
+                  <input type="number" step="0.01" placeholder="Rate" name="rate" id="rate" class="form-control">
+              </td>
+      
+              <td>
+                  <input type="date" name="takenOn" class="form-control">
+              </td>
+                 
+                  <td>
+      
+                      <button onclick="displayBill()" id="calculate-bill" class="btn btn-md btn-outline-success" type="button">Calculate</button>
+                     
+                  </td>
+              
+           
+                  <td>
+                      
+                      <select class="dropdown form-control" name="paymentStatus">
+                          <option value="PAID">PAID</option>
+                      
+                      <option value="UNPAID">UNPAID</option>
+                      </select>
+                  </td>
+             
+                 
+                </tr>
         </tbody>
-    </form>
-</table>
+    
+    
+   
 
-</div>
+</table>
+<button class="btn btn-md btn-info" type="submit" >Update</button>
+ </form>
+<script>
+    function displayBill(){
+    
+        var prev=document.querySelector("#prevR").value;
+        var curr=document.querySelector("#currR").value;
+        var rate=document.querySelector("#rate").value;
+        var changeButton= document.querySelector("#calculate-bill")
+        
+        changeButton.classList.remove("btn-outline-success");
+        changeButton.classList.add("btn-info");
+        changeButton.innerHTML=((curr-prev)*rate);
+        
+    
+    }
+    </script>
+
+    </div>
+    </div>
 <%-include("footer") -%>
+
+
+
+
