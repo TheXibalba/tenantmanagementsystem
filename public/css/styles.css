@@ -5,6 +5,18 @@
   font-family: "Google Sans", "Roboto", sans-serif;
   overflow:hidden;
 }
+
+.red{
+  color: red;
+}
+.green{
+  color: green;
+}
+.yellow{
+  color: yellow;
+}
+
+
 button a{
   text-decoration: none !important;
   color: black;
@@ -72,7 +84,16 @@ text-align: center;
     height: 100vh;
 }
 
-.outer-container-login::after,.outer-container-allusers::after {
+.outer-container-tenantRent{
+  background-image: url("../images/home.jpg");
+  background-position: center;
+  position: relative;
+ background-size: cover;
+    width: 100vw;
+    height: 100vh;
+}
+
+.outer-container-login::after,.outer-container-allusers::after,.outer-container-tenantRent::after {
   content: '';
   position: absolute;
   width: 100vw; 
@@ -91,6 +112,10 @@ text-align: center;
   background:rgba(0,0,0,0.7);
 
 }
+
+
+
+
 
 
 

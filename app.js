@@ -107,7 +107,7 @@ app.get("/tenantRent/:ID", function (req, res) {
                  
                  
                
-                console.log("total backlog: "+k);
+               
                 
                  
                  res.render("tenantRent", {
@@ -218,7 +218,7 @@ app.post("/tenantAddTable",function(req,res){
   const d = new Date();
   
                                                                    
-       letRentFirstObj={
+     /*   letRentFirstObj={
            month: monthNames[d.getMonth()],
            paidAmount:agreedRent,
            pendingAmount:0,
@@ -226,7 +226,7 @@ app.post("/tenantAddTable",function(req,res){
        };
 
        Tenant.updateOne({flatId:ID},{$push:{rent:rentFIrstObj}});
-
+ */
  
    res.redirect("/allUsers");
 
@@ -249,11 +249,13 @@ app.post("/", function (req, res) {
    } */
    
     Admin.findOne({username:adminName,password:adminPass},function(err){
-        if(err){
+        if(!err){
+            res.redirect("allUsers");
+           
+           
+        }else{
             console.log(err);
             res.send("ERROR!");
-        }else{
-            res.redirect("allUsers");
         }
     });
 

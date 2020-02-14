@@ -1,5 +1,5 @@
 <%-include("header") -%>
-<div class="outer-container">
+<div class="outer-container-tenantRent">
     <div class="main-container">
         <h2>Rent History For: <%=tenantName%> (Flat No: <%=tenantID%>)</h2>
 
@@ -17,7 +17,7 @@
 
                 </tr>
             </thead>
-            <tbody id="pa">
+            <tbody >
              
                 <% receivedData.forEach(function(data){ %>
 
@@ -29,7 +29,7 @@
                     </td>
                     <td><%=fixedRent%></td>
 
-                    <td > <%= data.pendingAmount %></td>
+                    <td class="pa"> <%= data.pendingAmount %></td>
                     <td> <%= data.paidAmount %></td>
                     
                    
@@ -43,7 +43,7 @@
                     <tr>
                         <form action="/tenantRent/<%= tenantID %>" method="POST">
                         
-                            <td> <select name="rentMonth" class="dropdown form-control">
+                            <td> <select name="rentMonth" class="dropdown form-control"  required id="rentMonth">
                                 <option value="Jan">January</option>
                                 <option value="Feb">February</option>
                                 <option value="Mar">March</option>
@@ -61,16 +61,16 @@
                         </td> 
 
                         <td>
-                            <input class="form-control no-spin" type="number" name="fixedRent"  readonly value="<%= fixedRent %>" id="fixedRent">
+                            <input class="form-control no-spin" type="number" name="fixedRent"  readonly  value="<%= fixedRent %>" id="fixedRent">
 
                         </td>
                         <td>
-                            <input class="form-control no-spin" type="number" name="pendingRent"  readonly value="<%= pending %>" id="pendingRent" >
+                            <input class="form-control no-spin" type="number" name="pendingRent"  readonly  value="<%= pending %>" id="pendingRent" >
 
 
                         </td>
                         <td>
-                            <input class="form-control no-spin" type="number" name="paidAmount"  value="<%= paidAmount %> " id="paidAmount">
+                            <input class="form-control no-spin" type="number" name="paidAmount" min=0 required value="<%= paidAmount %> " id="paidAmount">
                         </td>
 
                        
@@ -79,10 +79,10 @@
 
                         <td>
                             <select class="dropdown form-control" name="paymentStatus">
-                                <option value="PAID">PAID</option>
+                                <option value="PAID"><span class="green"></span>PAID</span></option>
                             
-                            <option value="UNPAID">UNPAID</option>
-                            <option value="PARTIAL">PARTIAL</option>
+                            <option value="UNPAID"> <span class="red">UNPAID</span> </option>
+                            <option value="PARTIAL"> <span class="yellow">PARTIAL</span> </option>
                             </select>
                         </td>
 

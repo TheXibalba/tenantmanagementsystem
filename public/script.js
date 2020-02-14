@@ -11,32 +11,28 @@ $(function () {
 
   let fixedRent=document.getElementById("fixedRent");
   let paidAmount=document.getElementById("paidAmount");
-  let pendingRent=document.getElementById("pendingRent");
-  let pa=document.getElementById("pa").lastChild;
+  let pendingRentForm=document.getElementById("pendingRent");
+  let pa=document.getElementsByClassName("pa");
+  let rentMonth=document.getElementById("rentMonth");
   let total=0;
-  let flag=0;
-
-  console.log(fixedRent,paidAmount,pendingRent);
+  let temp=0;
 
 
-   
+
+if(pa.length!=0){
+temp=(Number((pa[pa.length-1]).innerHTML));
+}
   paidAmount.addEventListener("change",function(event){
-    
-  /*  if(Number(paidAmount.value)>(Number()+Number())) */
-
-
-
-     pendingRent.value= Number(fixedRent.value)-Number(paidAmount.value);
-      
-     
-   
+     pendingRent.value= temp+Number(fixedRent.value)-Number(paidAmount.value);  
   });
-
-
   
    total=Number(pendingRent.value)+Number(fixedRent.value); 
-  paidAmount.setAttribute("placeholder","Total: "+total);
+   paidAmount.setAttribute("placeholder","Total: "+total);
   
-   
 
   
+
+
+
+
+ 
