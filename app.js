@@ -192,6 +192,7 @@ app.post("/tenantAddTable",function(req,res){
     contact_no=req.body.newContact;
     /* console.log("new user3: "+req.body.newContact); */
     flatAllocationDate=req.body.allocationDate;
+    console.log(flatAllocationDate.toString());
     agreedRent=req.body.rentAmount;
 
     
@@ -210,7 +211,7 @@ app.post("/tenantAddTable",function(req,res){
            if(err){
                console.log(err);
            }else{
-               console.log("Saved successfully!: \n");
+               console.log("Saved successfully!");
            }
        });
        const monthNames = ["January", "February", "March", "April", "May", "June",

@@ -2,9 +2,8 @@
 <div class="outer-container-tenantRent">
     <div class="main-container">
         <h2>Rent History For: <%=tenantName%> (Flat No: <%=tenantID%>)</h2>
-
-
-        <table class="table table-dark table-hover table-striped table-bordered users-table ">
+       
+        <table class="table table-dark table-hover table-striped table-bordered users-table tableBodyScroll " id="tableBodyScroll1">
             <thead class="bg-primary">
                 <tr>
                     <th>Month</th>
@@ -17,7 +16,8 @@
 
                 </tr>
             </thead>
-            <tbody >
+            
+            <tbody  >
              
                 <% receivedData.forEach(function(data){ %>
 
@@ -78,8 +78,8 @@
                         
 
                         <td>
-                            <select class="dropdown form-control" name="paymentStatus">
-                                <option value="PAID"><span class="green"></span>PAID</span></option>
+                            <select class="dropdown form-control" name="paymentStatus" id="rentPaymentStatus">
+                                <option value="PAID" ><span class="green"></span>PAID IN FULL</span></option>
                             
                             <option value="UNPAID"> <span class="red">UNPAID</span> </option>
                             <option value="PARTIAL"> <span class="yellow">PARTIAL</span> </option>
@@ -98,6 +98,7 @@
                     </tr>
 
             </tbody>
+        
         </table>
 
         <button class="btn btn-md btn-info" type="submit" >Update</button>
@@ -106,10 +107,5 @@
     </div>
 
 </div>
-
-<script defer>
-   
-
-</script>
 
 <%-include("footer") -%>

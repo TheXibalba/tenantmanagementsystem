@@ -4,11 +4,11 @@
 <h2>Bill Payment History For <%= name%> (Flat No: <%=tenantID %>): </h2>
 
 
-<table class="table table-dark table-hover table-striped table-bordered users-table ">
+<table class="table table-dark table-hover table-striped table-bordered users-table tableBodyScroll">
     <thead class="bg-primary">
         <tr>
 
-            <th>Month</th>
+            <th>For Month</th>
             <th>Previous Reading</th>
             <th>Current Reading</th>
             <th>Rate/Unit</th>
@@ -18,6 +18,7 @@
 
         </tr>
     </thead>
+    <tbody>
     
     <% receivedData.bill.forEach(function(data){ %>
         <tr>
@@ -55,7 +56,7 @@
 <%});%>
 
 
-        <tbody>
+       
            
             <tr>
                 <form action="/tenantBillFull/<%=tenantID%>" method="POST" id="billing-form">
@@ -79,14 +80,14 @@
                 
                 
                 <td>
-                     <input type="number" placeholder="Prev Reading" name="prevR" id="prevR" class="form-control">
+                     <input type="number" placeholder="Prev Reading" name="prevR" id="prevR" class="form-control no-spin">
                  </td>
       
                  <td>
-                  <input type="number" placeholder="Curr Reading" name="currR" id="currR" class="form-control"> 
+                  <input type="number" placeholder="Curr Reading" name="currR" id="currR" class="form-control no-spin"> 
               </td>
               <td>
-                  <input type="number" step="0.01" placeholder="Rate" name="rate" id="rate" class="form-control">
+                  <input type="number" step="0.01" placeholder="Rate" name="rate" id="rate" class="form-control no-spin">
               </td>
       
               <td>

@@ -33,6 +33,7 @@ nav{
   background-image: linear-gradient(to right, #434343 0%, black 100%);
   box-shadow: 5px 10px 18px #888888;
   width:100%;
+  padding:0.2rem !important;
 }
 
 body {
@@ -43,8 +44,8 @@ text-align: center;
 }
 
 .main-container{
-  width:90%;
-  margin: 3% 0 0 5%;
+  width:98%;
+  margin: 0.5% 0 0 1%;
   position: absolute;
   z-index: 2;
   
@@ -209,5 +210,16 @@ table{
 }
  
  bodyBackgroundColor: #0d1520;fontColor:#4a4a4a;font-family: "Google Sans", "Roboto", sans-serif;   */
-
+ .tableBodyScroll tbody {
+  display: block;
+  max-height: 65vh;
+  overflow-y: scroll;
  
+}
+
+.tableBodyScroll thead,
+tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
