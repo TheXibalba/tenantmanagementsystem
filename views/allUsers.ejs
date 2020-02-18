@@ -10,8 +10,8 @@
                 <tr>
                     <th>Flat No.</th>
                     <th>Name</th>
-                    
-                    <th>Flat Alloc Date</th>
+                    <th>Utilities</th>
+                    <th>Flat Allocation Day</th>
                     <th>Rent Details</th>
                     <th>Bill Details</th>
                     <!--  <TH>Pending Approvals</TH>-->
@@ -21,10 +21,14 @@
                 <% receivedData.forEach(function(dataItem){ %>
                 <tr>
                     <td><%= dataItem.flatId %></td>
-                    <td> <%= dataItem.name %><i class="fa fa-phone btn btn-sm btn-light edit-user" data-toggle="tooltip" data-placement="right" title="<%= dataItem.contact %>"></i>
-                      <a href="delete/<%=  dataItem.contact %>"> <i  class="fas fa-trash btn btn-sm btn-danger del-user"></i></a> </td>
-                           
-                            <td><%= dataItem.startingDate %></td>  
+                    <td> <%= dataItem.name %>
+                        
+                        <td>
+                        <i class="fa fa-phone btn btn-sm btn-light edit-user" data-toggle="tooltip" data-placement="right" title="<%= dataItem.contact %>"></i>
+                        <i class="fa fa-id-badge btn btn-sm btn-light id-user" data-toggle="tooltip" data-placement="right" title="Aadhar: <%= dataItem.govIdentification %>"></i> 
+                        <a href="delete/<%=  dataItem.flatId %>"> <i  class="fas fa-trash btn btn-sm btn-danger del-user"></i></a> </td>
+                    </td>
+                            <td class="reducedDateFont"><%= dataItem.startingDate %></td>  
                     <td><a href="tenantRent/<%=dataItem.flatId%>"><i class="fas fa-info-circle btn btn-sm btn-light"></i></a></td>
                     <td><a href="tenantBillFull/<%=dataItem.flatId%>"><i class="fas fa-info-circle btn btn-sm btn-light "></i></a></td>
                     </tr>

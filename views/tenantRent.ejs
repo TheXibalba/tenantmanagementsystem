@@ -4,15 +4,15 @@
         <h2>Rent History For: <%=tenantName%> (Flat No: <%=tenantID%>)</h2>
        
         <table class="table table-dark table-hover table-striped table-bordered users-table tableBodyScroll " id="tableBodyScroll1">
-            <thead class="bg-primary">
+            <thead class="bg-info">
                 <tr>
                     <th>Month</th>
                     <th>Rent Amt.</th>
-                    <th>Previous Dues</th>
-                    <th>Paid Amount</th>
-                    
- 
-                    <th>Payment status:</th>
+                    <th>Due Amt.</th>
+                    <th>Paid Amt.</th>
+                    <th>Paid On</th>
+                        
+                    <th>Payment Status:</th>
 
                 </tr>
             </thead>
@@ -25,15 +25,20 @@
 
 
                     <td>
-                        <%= data.month %>
+                       <b><%= data.month %></b> 
+                        <a href="/tenantRent/delete/<%=tenantID%>/<%=data.month%>"> <i  class="fas fa-trash btn btn-sm btn-danger del-user-rent"></i></a>
                     </td>
                     <td><%=fixedRent%></td>
 
                     <td class="pa"> <%= data.pendingAmount %></td>
                     <td> <%= data.paidAmount %></td>
-                    
+                    <td class="reducedDateFont"> <%
+                        let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                        let t=(data.paidOnDate).toLocaleDateString("en-US",options);
+                        
+                         %><b> <%=t%></b></td>
                    
-                    <td> <%= data.rentPaymentStatus %></td>
+                    <td>  <b>   <%= data.rentPaymentStatus %> </b> </td>
 
 
                     </tr>
@@ -44,18 +49,18 @@
                         <form action="/tenantRent/<%= tenantID %>" method="POST">
                         
                             <td> <select name="rentMonth" class="dropdown form-control"  required id="rentMonth">
-                                <option value="Jan">January</option>
-                                <option value="Feb">February</option>
-                                <option value="Mar">March</option>
-                                <option value="Apr">April</option>
+                                <option value="January">January</option>
+                                <option value="February">February</option>
+                                <option value="March">March</option>
+                                <option value="April">April</option>
                                 <option value="May">May</option>
-                                <option value="Jun">June</option>
-                                <option value="Jul">July</option>
-                                <option value="Aug">August</option>
-                                <option value="Sep">September</option>
-                                <option value="Oct">October</option>
-                                <option value="Nov">November</option>
-                                <option value="Dec">December</option>
+                                <option value="June">June</option>
+                                <option value="July">July</option>
+                                <option value="August">August</option>
+                                <option value="September">September</option>
+                                <option value="October">October</option>
+                                <option value="November">November</option>
+                                <option value="December">December</option>
             
                             </select> 
                         </td> 
@@ -72,6 +77,9 @@
                         <td>
                             <input class="form-control no-spin" type="number" name="paidAmount" min=0 required value="<%= paidAmount %> " id="paidAmount">
                         </td>
+                        <td>
+                            <input class="form-control" type="date" name="paidOnDate" required>
+                        </td>
 
                        
 
@@ -79,7 +87,7 @@
 
                         <td>
                             <select class="dropdown form-control" name="paymentStatus" id="rentPaymentStatus">
-                                <option value="PAID" ><span class="green"></span>PAID IN FULL</span></option>
+                                <option value="PAID IN FULL" ><span class="green"></span>PAID IN FULL</span></option>
                             
                             <option value="UNPAID"> <span class="red">UNPAID</span> </option>
                             <option value="PARTIAL"> <span class="yellow">PARTIAL</span> </option>
@@ -101,7 +109,7 @@
         
         </table>
 
-        <button class="btn btn-md btn-info" type="submit" >Update</button>
+        <button class="btn btn-md btn-outline-success" type="submit" >Update</button>
     </form>
 
     </div>

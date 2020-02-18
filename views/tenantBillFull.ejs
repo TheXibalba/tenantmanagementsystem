@@ -1,11 +1,11 @@
 <%-include("header") -%>
 <div class="outer-container-tenantBillFull">
-    <div class="main-container">
+    <div class="main-container-tenantBillFull">
 <h2>Bill Payment History For <%= name%> (Flat No: <%=tenantID %>): </h2>
 
 
-<table class="table table-dark table-hover table-striped table-bordered users-table tableBodyScroll">
-    <thead class="bg-primary">
+<table class="table table-dark table-hover table-striped table-bordered users-table  tableBodyScroll">
+    <thead class="bg-info">
         <tr>
 
             <th>For Month</th>
@@ -118,7 +118,7 @@
    
 
 </table>
-<button class="btn btn-md btn-info" type="submit" >Update</button>
+<button class="btn btn-md btn-outline-success" type="submit" >Update</button>
  </form>
 <script>
     function displayBill(){

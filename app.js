@@ -8,7 +8,7 @@ const mongoose=require("mongoose");
 const moment = require('moment');
 
 mongoose.connect("mongodb://localhost:27017/TMStenants",{useNewUrlParser:true,useUnifiedTopology:true});
-
+mongoose.set('useFindAndModify', false);
 const tmsAdminSchema=new mongoose.Schema({
     username:String,
     password:String
@@ -28,7 +28,7 @@ const tmsAdminSchema=new mongoose.Schema({
  }
 }); */
 
-
+let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
@@ -46,6 +46,8 @@ app.get("/", function (req, res) {
 
     res.render("login");
 
+  
+
 });
 
 let embedRent={
@@ -56,8 +58,8 @@ let embedRent={
      type:Number,
    default:0
  },
-
- rentPaymentStatus:String
+    paidOnDate:Date,
+    rentPaymentStatus:String
 
 };
 
@@ -76,22 +78,24 @@ let embedBill={
 const tmsTenantSchema=new mongoose.Schema({
     flatId:Number,
     name:String,
+    govIdentification:String,
     flatType:String,
     contact:Number,
-    startingDate:Date,
+    startingDate:String,
     agreedUponRent:Number,
 
     rent:[embedRent],
-    bill:[embedBill]
+    bill:[embedBill],
+    uniqueTenantKey:Number
     });
 
     const Tenant=new mongoose.model("tenant",tmsTenantSchema);
 
 
-app.get("/tenantRent/:ID", function (req, res) {
+    app.get("/tenantRent/:ID", function (req, res) {
     const c=req.params.ID;
     
-    Tenant.findOne({flatId:c},function(err,data){
+        Tenant.findOne({flatId:c},function(err,data){
         if(err){
             console.log("Error locating rent details!");
         }
@@ -104,74 +108,77 @@ app.get("/tenantRent/:ID", function (req, res) {
                         k=Number(data1.rent[data1.rent.length-1].pendingAmount);
 
                     }
-                 
-                 
-               
-               
-                
-                 
+
+                    let rentData=data.rent;
                  res.render("tenantRent", {
                 tenantName:data.name,
                 tenantID: data.flatId,
                 receivedData:data.rent,
                 fixedRent:data1.agreedUponRent,
+                
                 paidAmount:data.rent[1],
                 pending: k
-                
-
-
-
                 });
-                    });
-           
-
-           
-
-
+              });
+        
             }
-
-
     });
-    
-    
-    
-  
 });
 
 
 app.post("/tenantRent/:ID",function(req,res){
 const c=req.params.ID;
-
+const tempDate=new Date(req.body.paidOnDate);
+const r=tempDate.toLocaleDateString("en-US",options);
+/* console.log(req.body.paymentStatus); */
 let insertRent={
 month: req.body.rentMonth,
 paidAmount:req.body.paidAmount,
 pendingAmount: req.body.pendingRent,
+paidOnDate:tempDate,
 rentPaymentStatus: req.body.paymentStatus
 };
+
 
 
 Tenant.updateOne({flatId:c},{$push:{rent:insertRent}},function(err,data){
     if(err){
         console.log("error updating rent details!");
     }else{
-        console.log("Successfully updated the rent data! "+data);
+        console.log("Successfully updated the rent data! ");
     }
 });
 
 
-console.log(req.body);
+/* console.log(req.body); */
 res.redirect(`/tenantRent/${c}`);
 
 });
 
+app.get("/tenantRent/delete/:ID/:month",function(req,res){
+    const ID=Number(req.params.ID);
+    const delMonth=req.params.month;
+    Tenant.findOneAndUpdate({flatId:ID},{$pull:{rent:{month:delMonth}}},{new:true},function(err){
+            if(!err){
+                console.log("deleted month rent successfully!");
+            }else{
+                res.send("ERROR Deleting the rent!");
+            }
+            res.redirect(`/tenantRent/${ID}`);
+    });
 
+
+
+    
+   
+});
 
 app.get("/tenantAddTable",function(req,res){ 
     res.render("tenantAddTable");
 
 });
 
-    
+
 
 app.post("/tenantAddTable",function(req,res){
     /* database commands go here */
@@ -181,17 +188,22 @@ app.post("/tenantAddTable",function(req,res){
     let agreedRent;
     let ID;
     let flatAllocationDate;
-   
+    let govId;
     
+    let rand=Math.floor(Math.random()*(Math.pow(10,10)));
+
+
     ID=req.body.ID;
     newUser=req.body.newTenantName;
     /* console.log("new user1: "+req.body.newTenantName); */
-    
+    govId=req.body.govId;
     flat_type=req.body.newFlatType;
    /*  console.log("new user2: "+req.body.newFlatType); */
     contact_no=req.body.newContact;
     /* console.log("new user3: "+req.body.newContact); */
-    flatAllocationDate=req.body.allocationDate;
+
+    let tempDate=new Date(req.body.allocationDate);
+    flatAllocationDate=tempDate.toLocaleDateString("en-US",options);
     console.log(flatAllocationDate.toString());
     agreedRent=req.body.rentAmount;
 
@@ -199,10 +211,12 @@ app.post("/tenantAddTable",function(req,res){
        const newTenant=new Tenant({
            flatId:ID,
            name:newUser,
+           govIdentification:govId,
            flatType:flat_type,
            contact:contact_no,
            startingDate:flatAllocationDate,
-           agreedUponRent:agreedRent
+           agreedUponRent:agreedRent,
+           uniqueTenantKey:rand
 
        });
        /*  console.log(newTenant);
@@ -211,12 +225,14 @@ app.post("/tenantAddTable",function(req,res){
            if(err){
                console.log(err);
            }else{
-               console.log("Saved successfully!");
+               console.log("Tenant Created Successfully!");
+
+               res.render("displayUniqueKey",{
+               uniqueKey: tenant.uniqueTenantKey
+            });
+         
            }
        });
-       const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December" ];
-  const d = new Date();
   
                                                                    
      /*   letRentFirstObj={
@@ -229,8 +245,7 @@ app.post("/tenantAddTable",function(req,res){
        Tenant.updateOne({flatId:ID},{$push:{rent:rentFIrstObj}});
  */
  
-   res.redirect("/allUsers");
-
+ 
 });
 
 
@@ -241,19 +256,18 @@ app.post("/", function (req, res) {
   
     adminName=req.body.username;
     adminPass=req.body.password;
+  
    
-  /*  if(adminName==="yurajpawar99@gmail.com" && adminPass==="123"){
-       res.render("allUsers",{ID:01,newUser:"some user"});
-
-   }else{
-    res.send("ERROR!");
-   } */
-   
-    Admin.findOne({username:adminName,password:adminPass},function(err){
+    Admin.findOne({username:adminName},function(err,data){
         if(!err){
-            res.redirect("allUsers");
+            if(data.password===adminPass){
+            
+            res.redirect("/allUsers");
            
-           
+            }else{
+                
+                res.send("The Username or the Password is INVALID!");
+            }
         }else{
             console.log(err);
             res.send("ERROR!");
@@ -264,17 +278,16 @@ app.post("/", function (req, res) {
 
 });
 app.get("/allUsers", function (req, res) {    
-    Tenant.find({},function(err,data){
+    Tenant.find({},function(err,data) {
         if(err){
             console.log(err);
         }else{
            /*  console.log(data); */
             res.render("allUsers",{receivedData:data});
         }
-    });
    
+}).sort({flatId: 1});
 });
-
 
 app.post("/tenantBillFull/:ID", function (req, res) {
     const c=(Number)(req.params.ID);
@@ -314,18 +327,62 @@ Tenant.updateOne({flatId:c},{$push:{bill:insertBill}},function(err,data){
 
 
 
-app.get("/delete/:contactNo",function(req,res){
-    const c=req.params.contactNo;
-    /* console.log(c); */
-Tenant.deleteOne({contact:c },function(err){
-    if(err){
-        console.log(err);
+app.get("/delete/:flatNo",function(req,res){
+    const c=req.params.flatNo;
+
+    Tenant.findOne({flatId:c},function(err,data){
+        if(!err){
+            
+    res.render(`deleteWarn`,{
+        name:data.name,
+        flatID: data.flatId
+    });
+        }
+    });
+
+
+  
+
+});
+
+app.post("/deleteWarn/:flatNo",function(req,res){
+    const c=req.params.flatNo;
+    let key=Number(req.body.uniqueKey);
+
+
+
+    Tenant.findOne({flatId:c},function(err,data){
+        if(!err){
+
+
+            if(key===data.uniqueTenantKey){
+
+                Tenant.deleteOne({flatId:c },function(err){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        console.log("Deleted Successfully!");
+                        res.redirect("/allUsers");
+                    }
+
+            });
+
+
+        }else{
+            res.send("The Unique key was invalid!");
+        }
+        
     }else{
-        console.log("Deleted Successfully!");
+
+        console.log(err);
     }
-    res.redirect("/allUsers");
-});
-});
+        
+        
+    });
+    
+
+}); 
+
 
 app.get("/tenantBillFull/:flatIDEjs", function (req, res) {
     

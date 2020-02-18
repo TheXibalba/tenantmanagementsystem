@@ -4,6 +4,11 @@
   /* font-family: 'Roboto', sans-serif; */
   font-family: "Google Sans", "Roboto", sans-serif;
   overflow:hidden;
+  box-sizing: border-box;
+}
+
+input{
+  text-align: center;
 }
 
 .red{
@@ -36,6 +41,19 @@ nav{
   padding:0.2rem !important;
 }
 
+.app-logo{
+  height: 2rem;
+  width: 2rem;
+  margin-left: 1rem;
+}
+
+.app-login-img{
+  height: 7rem;
+  width: 7rem;
+margin-top: 1rem;
+}
+
+
 body {
 text-align: center;
 
@@ -43,14 +61,17 @@ text-align: center;
   width: 100vw;
 }
 
-.main-container{
-  width:98%;
-  margin: 0.5% 0 0 1%;
+.main-container, .main-container-tenantBillFull{
+  width:100%;
+  margin: 0.5% 0 0 0;
   position: absolute;
   z-index: 2;
   
 
 }
+
+
+
 .container{
   position: absolute;
   z-index: 2;
@@ -66,8 +87,8 @@ text-align: center;
     height: 100vh;
 }
 
-.outer-container-allusers,.outer-container-tenant-add-table{
-  background-image: url("../images/home.jpg");
+.outer-container-allusers{
+  background-image: url("../images/allUsers1.jpg");
   background-position: center;
   position: relative;
  background-size: cover;
@@ -76,13 +97,83 @@ text-align: center;
 }
 
 
-.outer-container-tenantBillFull{
+.outer-container-tenant-add-table{
   background-image: url("../images/home.jpg");
   background-position: center;
   position: relative;
  background-size: cover;
     width: 100vw;
     height: 100vh;
+}
+.displayUniqueKey{
+
+  background-image: url("../images/uniqueKey.jpg");
+  background-position: center;
+  position: relative;
+ background-size: cover;
+    width: 100vw;
+    height: 100vh;
+
+}
+
+
+.deleteWarn{
+
+  background-image: url("../images/deleteWarn.jpg");
+  background-position: center;
+  background-size: cover;
+  position: relative;
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+color:white;
+
+
+}
+.deleteWarn-container{
+  width:50%;
+  margin: 12% 0 0 25%;
+  background:rgba(0,0,0,0.3);
+  position: absolute;
+  z-index: 2;
+  padding: 1rem;
+}
+
+.deleteWarn-container form{
+  margin: 5% 0 0 0;
+}
+
+.deleteWarn-container .btn{
+margin-top: 1rem;
+}
+
+.displayUniqueKey-container{
+
+  width:50%;
+  margin: 16% 0 0 25%;
+  background:transparent;
+  position: absolute;
+  z-index: 2;
+  padding: 1rem;
+
+}
+
+.displayUniqueKey .alert{
+  text-align: center;
+}
+
+
+.outer-container-tenantBillFull{
+  background-image: url("../images/bill.jpg");
+  background-position: center;
+  position: relative;
+ background-size: cover;
+    width: 100vw;
+    height: 100vh;
+}
+
+.bg-thead{
+  background-color: #00BCD4;
 }
 
 .outer-container-tenantRent{
@@ -94,7 +185,8 @@ text-align: center;
     height: 100vh;
 }
 
-.outer-container-login::after,.outer-container-allusers::after,.outer-container-tenantRent::after {
+.outer-container-login::after,.outer-container-allusers::after,.outer-container-tenantRent::after,
+.outer-container-tenant-add-table::after, .deleteWarn::after {
   content: '';
   position: absolute;
   width: 100vw; 
@@ -104,17 +196,15 @@ text-align: center;
 
 }
 
-.outer-container-tenantBillFull::after {
+.outer-container-tenantBillFull::after, .displayUniqueKey::after {
   content: '';
   position: absolute;
   width: 100vw; 
   height:100vh;
   top:0; left:0;
-  background:rgba(0,0,0,0.7);
+  background:rgba(0,0,0,0.5);
 
 }
-
-
 
 
 
@@ -127,9 +217,13 @@ table{
 .allusers-table .edit-user{
   margin-left: 1.5rem;
 }
-.allusers-table .del-user {
+.allusers-table .del-user, .id-user {
   margin-left: 0.5rem ;
 }
+.del-user-rent{
+margin-left:1rem;
+}
+
 .users-table{
   text-align: center;
 }
@@ -141,7 +235,7 @@ table{
   width: 100%;
   max-width: 330px;
   padding: 15px;
-  margin: 10% auto;
+  margin: 1.5rem auto;
 }
 
 .form-signin .form-control {
@@ -187,9 +281,11 @@ table{
 }
 
 .footer{
-  position: absolute;
+  position: static;
   text-align: center;
-  z-index: 2;
+  z-index: 4;
+ color:black;
+  height: 100px;
 }
 
 .no-spin, .no-spin:hover, .no-spin:focus {
@@ -211,7 +307,7 @@ table{
  
  bodyBackgroundColor: #0d1520;fontColor:#4a4a4a;font-family: "Google Sans", "Roboto", sans-serif;   */
  .tableBodyScroll tbody {
-  display: block;
+  display: table;
   max-height: 65vh;
   overflow-y: scroll;
  
@@ -222,4 +318,12 @@ tbody tr {
   display: table;
   width: 100%;
   table-layout: fixed;
+}
+
+.reducedDateFont{
+  font-size: 0.9rem;
+}
+
+input[readonly]{
+  cursor: not-allowed;
 }
