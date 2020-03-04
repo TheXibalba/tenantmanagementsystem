@@ -71,6 +71,10 @@ let embedBill={
     rpu:Number,
     takenOnDate:String,
     totalBill: Number,
+    previousDues:{
+       type: Number,
+       default:0
+    },
     billPaymentStatus:String
 
 }  ;
@@ -297,6 +301,13 @@ app.post("/tenantBillFull/:ID", function (req, res) {
     let currentReading = Number(req.body.currR);
     let ratePerUnit = Number(req.body.rate);
     let takenOn=req.body.takenOn;
+    let dues=req.body.dues;
+
+    Tenant.findOne({flatId:c},function(err,data){
+
+    });
+
+
     let finalBill = (currentReading - previousReading) * ratePerUnit;
     let status=req.body.paymentStatus;
 //MongoDB bill saving commands
@@ -308,6 +319,7 @@ const insertBill={
     rpu:ratePerUnit,
     takenOnDate: takenOn,
     totalBill: finalBill,
+    /* previousDues: */
     billPaymentStatus: status
 };
 
@@ -393,6 +405,15 @@ app.get("/tenantBillFull/:flatIDEjs", function (req, res) {
             console.log(err);
         }
         else{
+            let k1=0;
+            Tenant.findOne({flatId:c2},function(err,data1){
+                if(data1.bill.length!=0){
+                 
+                    k1=Number(data1.bill[data1.bill.length-1].previousDues);
+        
+                }
+            });
+        
            
             /* console.log("THE VALUE OF C2: "+c2); */
            /*  console.log(data); */
@@ -400,7 +421,8 @@ app.get("/tenantBillFull/:flatIDEjs", function (req, res) {
             res.render("tenantBillFull", {
             name:data.name,
             tenantID:data.flatId,
-            receivedData:data
+            receivedData:data,
+            k:k1
 
            } );
         }
@@ -410,7 +432,14 @@ app.get("/tenantBillFull/:flatIDEjs", function (req, res) {
    
 });
 
+app.get("/contact",function(req,res){
+    res.render("contact");
+});
 
+app.post("/contact",function(req,res){
+    console.log(req.body);
+    res.send("Thank you for the message, you will receive the reply within the next working day!");
+});
 
 app.listen(3000, function () {
     console.log("Server started on port 3000");

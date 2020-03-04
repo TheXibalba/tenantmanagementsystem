@@ -14,6 +14,7 @@
             <th>Rate/Unit</th>
             <th>Taken On</th>
             <th>Bill</th>
+             <th>Dues</th>
             <th>Status</th>
 
         </tr>
@@ -36,7 +37,7 @@
             </td>
             
             <td>
-                <%= data.rpu %>
+               <span>₹ <%= data.rpu %></span> 
             </td>
 
             <td>
@@ -44,9 +45,9 @@
             </td>
 
             <td>
-                <%= data.totalBill%>
+               <span>₹ <%= data.totalBill%></span> 
             </td>
-
+            <td><span>₹ <%= data.previousDues%></span> </td>
 
             <td>
                 <%= data.billPaymentStatus %>
@@ -99,11 +100,13 @@
                       <button onclick="displayBill()" id="calculate-bill" class="btn btn-md btn-outline-success" type="button">Calculate</button>
                      
                   </td>
+                  <td>  <input class="form-control no-spin" type="number" name="dues" id="dues" placeholder="Dues" value="<%=k%>" readonly></td>
               
            
                   <td>
                       
-                      <select class="dropdown form-control" name="paymentStatus">
+                      <select class="dropdown form-control" name="paymentStatus" id="paymentStatus">
+                          <option value="PAID" >select</option>
                           <option value="PAID">PAID</option>
                       
                       <option value="UNPAID">UNPAID</option>
@@ -121,16 +124,30 @@
 <button class="btn btn-md btn-outline-success" type="submit" >Update</button>
  </form>
 <script>
+
+    let due=document.getElementById("dues");
+    let paidOrNot= document.getElementById("paymentStatus");
+      
+    var prev=document.querySelector("#prevR");
+        var curr=document.querySelector("#currR");
+        var rate=document.querySelector("#rate");
+        var changeButton= document.querySelector("#calculate-bill");
+
+
+    paidOrNot.addEventListener("change",function(){
+        let value= this.value;
+        console.log(value);
+        if(value==="UNPAID"){
+            due.value=due.value+(curr-prev)*rate;
+        }
+    });
+
     function displayBill(){
-    
-        var prev=document.querySelector("#prevR").value;
-        var curr=document.querySelector("#currR").value;
-        var rate=document.querySelector("#rate").value;
-        var changeButton= document.querySelector("#calculate-bill")
+   
         
         changeButton.classList.remove("btn-outline-success");
         changeButton.classList.add("btn-info");
-        changeButton.innerHTML=((curr-prev)*rate);
+        changeButton.innerHTML=("₹ "+(curr.value-prev.value)*rate.value);
         
     
     }
