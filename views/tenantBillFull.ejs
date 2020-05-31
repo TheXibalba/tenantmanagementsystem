@@ -4,10 +4,10 @@
 <h2>Bill Payment History For <%= name%> (Flat No: <%=tenantID %>): </h2>
 
 
-<table class="table table-dark table-hover table-striped table-bordered users-table  tableBodyScroll">
+<table class="table table-dark table-hover table-striped table-bordered users-table  tableBodyScroll" >
     <thead class="bg-info">
-        <tr>
-
+        
+<tr>
             <th>For Month</th>
             <th>Previous Reading</th>
             <th>Current Reading</th>
@@ -16,10 +16,10 @@
             <th>Bill</th>
              <th>Dues</th>
             <th>Status</th>
-
-        </tr>
+</tr>
+        
     </thead>
-    <tbody>
+    <tbody class="allusers-table">
     
     <% receivedData.bill.forEach(function(data){ %>
         <tr>
@@ -40,9 +40,14 @@
                <span>₹ <%= data.rpu %></span> 
             </td>
 
-            <td>
-                <%= data.takenOnDate %>
-            </td>
+            <td class="reducedDateFont">
+               <% 
+               let options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' };
+
+                
+               let t=(data.takenOnDate).toLocaleDateString("en-US",options);
+                        
+               %><b> <%=t%></b></td>
 
             <td>
                <span>₹ <%= data.totalBill%></span> 
@@ -62,7 +67,7 @@
             <tr>
                 <form action="/tenantBillFull/<%=tenantID%>" method="POST" id="billing-form">
           
-                <td> <select name="billingMonth" class="dropdown form-control">
+                <td> <select name="billingMonth" class="dropdown form-control" required>
                     <option value="Jan">January</option>
                     <option value="Feb">February</option>
                     <option value="Mar">March</option>
@@ -81,18 +86,18 @@
                 
                 
                 <td>
-                     <input type="number" placeholder="Prev Reading" name="prevR" id="prevR" class="form-control no-spin">
+                     <input type="number" placeholder="Prev Reading" name="prevR" id="prevR" class="form-control no-spin" required>   
                  </td>
       
                  <td>
-                  <input type="number" placeholder="Curr Reading" name="currR" id="currR" class="form-control no-spin"> 
+                  <input type="number" placeholder="Curr Reading" name="currR" id="currR" class="form-control no-spin" required>  
               </td>
               <td>
-                  <input type="number" step="0.01" placeholder="Rate" name="rate" id="rate" class="form-control no-spin">
+                  <input type="number" step="0.01" placeholder="Rate" name="rate" id="rate" class="form-control no-spin" required>
               </td>
       
               <td>
-                  <input type="date" name="takenOn" class="form-control">
+                  <input type="date" name="takenOn" class="form-control" required>
               </td>
                  
                   <td>
@@ -100,7 +105,8 @@
                       <button onclick="displayBill()" id="calculate-bill" class="btn btn-md btn-outline-success" type="button">Calculate</button>
                      
                   </td>
-                  <td>  <input class="form-control no-spin" type="number" name="dues" id="dues" placeholder="Dues" value="<%=k%>" readonly></td>
+                  <td><input class="form-control no-spin" type="number" name="dues" id="dues" placeholder="Dues" value="<%=k%>" readonly>
+                </td>
               
            
                   <td>
@@ -124,8 +130,11 @@
 <button class="btn btn-md btn-outline-success" type="submit" >Update</button>
  </form>
 <script>
-
-    let due=document.getElementById("dues");
+   let scrollTable = document.getElementById("tableBodyScroll1");
+   scrollTable.scrollTop = scrollTable.scrollHeight; 
+    
+   
+   let due=document.getElementById("dues");
     let paidOrNot= document.getElementById("paymentStatus");
       
     var prev=document.querySelector("#prevR");

@@ -12,22 +12,22 @@ $(function () {
   let fixedRent=document.getElementById("fixedRent");
   let paidAmount=document.getElementById("paidAmount");
   let pendingRentForm=document.getElementById("pendingRent");
-  let pa=document.getElementsByClassName("pa");
+  let pendingAmount=document.getElementsByClassName("pa");
   let rentMonth=document.getElementById("rentMonth");
   let total=0;
   let temp=0;
 let rentPaymentStatus=document.getElementById("rentPaymentStatus");
 
 
-if(pa.length!=0){
-temp=(Number(((pa[pa.length-1]).innerHTML).split(" ")[1]));
+if(pendingAmount.length!=0){
+temp=(Number(((pendingAmount[pendingAmount.length-1]).innerHTML).split(" ")[1]));
 }
   paidAmount.addEventListener("change",function(event){
      pendingRent.value= temp+Number(fixedRent.value)-Number(paidAmount.value);  
 
      if(Number(pendingRent.value)===0){
      console.log("rent payment triggered!");
-      rentPaymentStatus.children[0].setAttribute("selected","selected");
+      rentPaymentStatus.children[0].setAttribute("selected","PAID IN FULL");
      }
   });
   
@@ -35,11 +35,10 @@ temp=(Number(((pa[pa.length-1]).innerHTML).split(" ")[1]));
    paidAmount.setAttribute("placeholder","Total: "+total);
   
 
-  /* 
-   let scrollTable = document.getElementById("tableBodyScroll1");
-   scrollTable.scrollTop = scrollTable.scrollHeight;
- */
-document.getElementById('tableBodyScroll1').scrollTop = 9999999;
+  
+
+   
+ 
 
 
 

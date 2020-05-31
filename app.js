@@ -45,9 +45,6 @@ var justMonth = dateStr.substring(4, 7);
 app.get("/", function (req, res) {
 
     res.render("login");
-
-  
-
 });
 
 let embedRent={
@@ -69,7 +66,7 @@ let embedBill={
     prevReading:Number,
     currReading:Number,
     rpu:Number,
-    takenOnDate:String,
+    takenOnDate:Date,
     totalBill: Number,
     previousDues:{
        type: Number,
@@ -85,7 +82,7 @@ const tmsTenantSchema=new mongoose.Schema({
     govIdentification:String,
     flatType:String,
     contact:Number,
-    startingDate:String,
+    startingDate:Date,
     agreedUponRent:Number,
 
     rent:[embedRent],
@@ -106,24 +103,24 @@ const tmsTenantSchema=new mongoose.Schema({
         else{
 
             let k=0;
-                Tenant.findOne({flatId:c},function(err,data1){
-                    if(data1.rent.length!=0){
+               
+                    if(data.rent.length!=0){
                      
-                        k=Number(data1.rent[data1.rent.length-1].pendingAmount);
+                        k=Number(data.rent[data.rent.length-1].pendingAmount);
 
                     }
 
-                    let rentData=data.rent;
+                    
                  res.render("tenantRent", {
                 tenantName:data.name,
                 tenantID: data.flatId,
                 receivedData:data.rent,
-                fixedRent:data1.agreedUponRent,
+                fixedRent:data.agreedUponRent,
                 
                 paidAmount:data.rent[1],
                 pending: k
                 });
-              });
+              
         
             }
     });
@@ -134,30 +131,57 @@ app.post("/tenantRent/:ID",function(req,res){
 const c=req.params.ID;
 const tempDate=new Date(req.body.paidOnDate);
 const r=tempDate.toLocaleDateString("en-US",options);
-/* console.log(req.body.paymentStatus); */
-let insertRent={
-month: req.body.rentMonth,
-paidAmount:req.body.paidAmount,
-pendingAmount: req.body.pendingRent,
-paidOnDate:tempDate,
-rentPaymentStatus: req.body.paymentStatus
-};
+// console.log(req.body.paymentStatus); 
+let tempPendingRent=0;
 
 
 
-Tenant.updateOne({flatId:c},{$push:{rent:insertRent}},function(err,data){
-    if(err){
-        console.log("error updating rent details!");
-    }else{
-        console.log("Successfully updated the rent data! ");
-    }
+Tenant.findOne({flatId:c},(err,data)=>{
+
+
+if(!err && (data.rent).length!==0){
+    tempPendingRent+=data.rent[(data.rent).length-1];
+      console.log("Amount in each iteration: "+tempPendingRent);
+  }
 });
 
 
-/* console.log(req.body); */
-res.redirect(`/tenantRent/${c}`);
+
+
+    console.log(req.body);
+
+    let tempTotalPendingRent= tempPendingRent + (req.body.fixedRent-req.body.paidAmount);
+
+    console.log("Temp Total pending Rent: "+ tempTotalPendingRent);
+    
+    let insertRent={
+    month: req.body.rentMonth,
+    paidAmount:req.body.paidAmount,
+    pendingAmount: tempTotalPendingRent,
+    paidOnDate:tempDate,
+    rentPaymentStatus: req.body.paymentStatus
+    };
+    
+    
+    
+    Tenant.updateOne({flatId:c},{$push:{rent:insertRent}},function(err,data){
+        if(err){
+            console.log("error updating rent details!");
+        }else{
+            console.log("Success!");
+        }
+        res.redirect(`/tenantRent/${c}`);
+    });
+    
+    
+    /* console.log(req.body); */
+   
 
 });
+
+
+
+
 
 app.get("/tenantRent/delete/:ID/:month",function(req,res){
     const ID=Number(req.params.ID);
@@ -206,9 +230,9 @@ app.post("/tenantAddTable",function(req,res){
     contact_no=req.body.newContact;
     /* console.log("new user3: "+req.body.newContact); */
 
-    let tempDate=new Date(req.body.allocationDate);
-    flatAllocationDate=tempDate.toLocaleDateString("en-US",options);
-    console.log(flatAllocationDate.toString());
+    flatAllocationDate=req.body.allocationDate;
+   /*  flatAllocationDate=tempDate.toLocaleDateString("en-US",options);
+    console.log(flatAllocationDate.toString()); */
     agreedRent=req.body.rentAmount;
 
     

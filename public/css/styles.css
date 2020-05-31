@@ -222,6 +222,7 @@ margin-top: 1rem;
 
 table{
   text-align: center;
+  
 }
 .allusers-table .edit-user{
   margin-left: 1.5rem;
@@ -240,6 +241,11 @@ margin-left:1rem;
   width: auto;
   display: inline-block;
 }
+
+.users-table td, .users-table th{
+  padding: 0.7rem 0.1rem;
+}
+
 .form-signin{
   width: 100%;
   max-width: 330px;
@@ -341,20 +347,28 @@ z-index: 2;
    Show outline 
 }
  
- bodyBackgroundColor: #0d1520;fontColor:#4a4a4a;font-family: "Google Sans", "Roboto", sans-serif;   */
- .tableBodyScroll tbody {
-  display: table;
-  max-height: 65vh;
-  overflow-y: scroll;
- 
-}
 
-.tableBodyScroll thead,
-tbody tr {
-  display: table;
+*/
+
+
+
+
+
+ tr{
+  display:table;
   width: 100%;
   table-layout: fixed;
+  box-sizing: border-box; 
 }
+
+tbody{
+   display:block;
+  overflow: auto;
+  table-layout: fixed;
+  max-height: 65vh;
+}
+
+
 
 .reducedDateFont{
   font-size: 0.9rem;
