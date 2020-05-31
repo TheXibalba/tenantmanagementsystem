@@ -20,7 +20,7 @@ let rentPaymentStatus=document.getElementById("rentPaymentStatus");
 
 
 if(pa.length!=0){
-temp=(Number((pa[pa.length-1]).innerHTML));
+temp=(Number(((pa[pa.length-1]).innerHTML).split(" ")[1]));
 }
   paidAmount.addEventListener("change",function(event){
      pendingRent.value= temp+Number(fixedRent.value)-Number(paidAmount.value);  
@@ -40,5 +40,7 @@ temp=(Number((pa[pa.length-1]).innerHTML));
    scrollTable.scrollTop = scrollTable.scrollHeight;
  */
 document.getElementById('tableBodyScroll1').scrollTop = 9999999;
+
+
 
  

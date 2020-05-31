@@ -28,17 +28,34 @@
                        <b><%= data.month %></b> 
                       <%if(receivedData[receivedData.length-1].month===data.month){%>  <a href="/tenantRent/delete/<%=tenantID%>/<%=data.month%>"> <i class="fas fa-trash btn btn-sm btn-danger del-user-rent"></i></a><%}%>
                     </td>
-                    <td><%=fixedRent%></td>
+                    <td>₹ <%=fixedRent%></td>
 
-                    <td class="pa"> <%= data.pendingAmount %></td>
-                    <td> <%= data.paidAmount %></td>
+                    <td class="pa">₹ <%= data.pendingAmount %></td>
+                    <td>₹ <%= data.paidAmount %></td>
                     <td class="reducedDateFont"> <%
                         let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                         let t=(data.paidOnDate).toLocaleDateString("en-US",options);
                         
                          %><b> <%=t%></b></td>
                    
-                    <td>  <b>   <%= data.rentPaymentStatus %> </b> </td>
+                    <td>
+                        
+                        <%
+                        let PS=data.rentPaymentStatus;
+                        let colorClass="";
+                        
+                        if(PS==="PAID IN FULL")
+                          {
+                              colorClass="green";
+                          }else if(PS==="PARTIAL"){
+                              colorClass="orange";
+                          }else{
+                              colorClass="red";
+                          }%>
+                        
+                        
+                        <b class="<%=colorClass%>">   <%= data.rentPaymentStatus %> </b> 
+                    </td>
 
 
                     </tr>
