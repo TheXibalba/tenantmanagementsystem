@@ -30,7 +30,6 @@ const tmsAdminSchema=new mongoose.Schema({
  }
 }); */
 
-// let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
@@ -38,11 +37,11 @@ app.use(express.static(__dirname+"/public"));
 app.use(express.json());
 require('dotenv').config();
 
-var date = new Date();
-var dateStr = date.toString();
-var end = dateStr.indexOf('GMT') - 10;
-var dateWithoutTime = dateStr.substring(0, end);
-var justMonth = dateStr.substring(4, 7);
+let date = new Date();
+let dateStr = date.toString();
+let end = dateStr.indexOf('GMT') - 10;
+let dateWithoutTime = dateStr.substring(0, end);
+let justMonth = dateStr.substring(4, 7);
 
 
 
@@ -113,7 +112,7 @@ const tmsTenantSchema=new mongoose.Schema({
                         k=Number(data.rent[data.rent.length-1].pendingAmount);
 
                     }
-
+                       
                     
                  res.render("tenantRent", {
                 tenantName:data.name,
@@ -135,52 +134,50 @@ const tmsTenantSchema=new mongoose.Schema({
 app.post("/tenantRent/:ID",auth,function(req,res){
 const c=req.params.ID;
 const tempDate=new Date(req.body.paidOnDate);
-//const r=tempDate.toLocaleDateString("en-US",options);
-// console.log(req.body.paymentStatus); 
-let tempPendingRent=0;
 
+let tempPendingRent=0;
+let tempTotalPendingRent=0;
 
 
 Tenant.findOne({flatId:c},(err,data)=>{
 
 
-if(!err && (data.rent).length!==0){
-    tempPendingRent+=data.rent[(data.rent).length-1];
-      console.log("Amount in each iteration: "+tempPendingRent);
+if((!err) && ((data.rent).length!==0)){
+     tempPendingRent=(data.rent[(data.rent).length-1]).pendingAmount; 
+     console.log(`Last pending rent value: ${tempPendingRent}`);
+      
+  }else{
+      tempPendingRent=0;
+      tempTotalPendingRent=0;
   }
-});
 
 
 
+  tempTotalPendingRent= tempPendingRent + (req.body.fixedRent-req.body.paidAmount);
 
-    console.log(req.body);
-
-    let tempTotalPendingRent= tempPendingRent + (req.body.fixedRent-req.body.paidAmount);
-
-    console.log("Temp Total pending Rent: "+ tempTotalPendingRent);
-    
-    let insertRent={
-    month: req.body.rentMonth,
-    paidAmount:req.body.paidAmount,
-    pendingAmount: tempTotalPendingRent,
-    paidOnDate:tempDate,
-    rentPaymentStatus: req.body.paymentStatus
-    };
-    
-    
-    
-    Tenant.updateOne({flatId:c},{$push:{rent:insertRent}},function(err,data){
-        if(err){
-            console.log("error updating rent details!");
-        }else{
-            console.log("Success!");
-        }
-        res.redirect(`/tenantRent/${c}`);
-    });
-    
-    
-    /* console.log(req.body); */
    
+    
+  let insertRent={
+  month: req.body.rentMonth,
+  paidAmount:req.body.paidAmount,
+  pendingAmount: tempTotalPendingRent,
+  paidOnDate:tempDate,
+  rentPaymentStatus: req.body.paymentStatus
+  };
+  
+  
+  
+  Tenant.updateOne({flatId:c},{$push:{rent:insertRent}},function(err,data){
+      if(err){
+          console.log("error updating rent details!");
+      }else{
+          console.log("Success!");
+      }
+      res.redirect(`/tenantRent/${c}`);
+  });
+
+
+});
 
 });
 
@@ -188,10 +185,10 @@ if(!err && (data.rent).length!==0){
 
 
 
-app.get("/tenantRent/delete/:ID/:month",auth,function(req,res){
+app.get("/tenantRent/delete/:ID/:monthId",auth,function(req,res){
     const ID=Number(req.params.ID);
-    const delMonth=req.params.month;
-    Tenant.findOneAndUpdate({flatId:ID},{$pull:{rent:{month:delMonth}}},{new:true},function(err){
+    const delMonth=req.params.monthId;
+    Tenant.findOneAndUpdate({flatId:ID},{$pull:{rent:{_id:delMonth}}},{new:true},function(err){
             if(!err){
                 console.log("deleted month rent successfully!");
             }else{
@@ -291,11 +288,9 @@ app.post("/", function (req, res) {
 
                 };
 
-                const token=jwt.sign(admin,process.env.COOKIE_SECRET,{expiresIn: "20s"});
+                const token=jwt.sign(admin,process.env.COOKIE_SECRET,{expiresIn: "20m"});
                 res.cookie("authCookie",token,{httpOnly:true});
-              
-
-               
+     
             
             res.redirect("/allUsers");
            
@@ -466,16 +461,18 @@ app.get("/tenantBillFull/:flatIDEjs",auth, function (req, res) {
 });
 
 app.get("/contact",function(req,res){
-    res.render("contact");
+    req.authenticated="FALSE";
+    res.render("contact",{authenticationIndicator:req.authenticated});
 });
 
 app.post("/contact",function(req,res){
     console.log(req.body);
-    res.send("Thank you for the message, you will receive the reply within the next working day!");
+    res.send("Thank you for the message, you will receive the reply within the next working day!") ;
 });
 
 app.get("/logout",(req,res)=>{
-    res.cookie("authCookie","",{maxAge:0}).redirect("/");
+
+    res.clearCookie("authCookie").redirect("/");
 
 
 });

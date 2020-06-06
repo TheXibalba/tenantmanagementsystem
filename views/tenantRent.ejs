@@ -21,12 +21,12 @@
              
                 <% receivedData.forEach(function(data){ %>
 
-                    <tr>
+                    <tr class="renderedRentData">
 
 
-                    <td>
+                    <td class="rentMonth">
                        <b><%= data.month %></b> 
-                      <%if(receivedData[receivedData.length-1].month===data.month){%>  <a href="/tenantRent/delete/<%=tenantID%>/<%=data.month%>"> <i class="fas fa-trash btn btn-sm btn-danger del-user-rent"></i></a><%}%>
+                      <%if(receivedData[receivedData.length-1]._id===data._id){%>  <a href="/tenantRent/delete/<%=tenantID%>/<%=data._id%>"> <i class="fas fa-trash btn btn-sm btn-danger del-user-rent"></i></a><%}%>
                     </td>
                     <td>₹ <%=fixedRent%></td>
 
@@ -132,5 +132,6 @@
     </div>
 
 </div>
+
 
 <%-include("footer") -%>

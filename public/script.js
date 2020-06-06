@@ -25,9 +25,9 @@ temp=(Number(((pendingAmount[pendingAmount.length-1]).innerHTML).split(" ")[1]))
   paidAmount.addEventListener("change",function(event){
      pendingRent.value= temp+Number(fixedRent.value)-Number(paidAmount.value);  
 
-     if(Number(pendingRent.value)===0){
-     console.log("rent payment triggered!");
-      rentPaymentStatus.children[0].setAttribute("selected","PAID IN FULL");
+     if(Number(pendingRent.value)<0){
+     alert("Please check the paid amount");
+  
      }
   });
   
@@ -43,3 +43,4 @@ temp=(Number(((pendingAmount[pendingAmount.length-1]).innerHTML).split(" ")[1]))
 
 
  
+   
