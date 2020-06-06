@@ -277,31 +277,20 @@ app.post("/", function (req, res) {
     adminName=req.body.username;
     adminPass=req.body.password;
   
-   
-    Admin.findOne({username:adminName},function(err,data){
-        if(!err){
-            if(data.password===adminPass){
-                const admin={
-                    id:data._id,
-                    name:data.username,
+    
 
-
-                };
-
-                const token=jwt.sign(admin,process.env.COOKIE_SECRET,{expiresIn: "20m"});
-                res.cookie("authCookie",token,{httpOnly:true});
-     
-            
-            res.redirect("/allUsers");
-           
-            }else{
-                
-                res.send("The Username or the Password is INVALID!");
-            }
-        }else{
-            console.log(err);
-            res.send("ERROR!");
-        }
+    Admin.findOne({username:adminName, password:adminPass},function(err,data){
+       try{
+       const admin={
+        id:data._id,
+        name:data.username,
+    };
+       const token=jwt.sign(admin,process.env.COOKIE_SECRET,{expiresIn: process.env.SESSION_EXPIRES_IN});
+       res.cookie("authCookie",token,{httpOnly:true}).redirect("/allUsers");
+}catch(error){
+ res.sendStatus(404);
+}
+       
     });
 
 
@@ -346,7 +335,7 @@ const insertBill={
     rpu:ratePerUnit,
     takenOnDate: takenOn,
     totalBill: finalBill,
-    /* previousDues: */
+   
     billPaymentStatus: status
 };
 
@@ -478,7 +467,9 @@ app.get("/logout",(req,res)=>{
 });
 
 
-
+app.get('/*', function(req, res) {
+    res.sendStatus(404);
+});
 app.listen(3000, function () {
     console.log("Server started on port 3000");
 });
