@@ -35,6 +35,15 @@
         <li class="nav-item btn-secondary">
           <a class="nav-link" href="contact">Contact</a>
         </li>
+        <%if(authenticationIndicator==="TRUE"){%>
+
+         <li class="nav-item btn-secondary">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+
+
+
+        <%}%>
 
       </ul>
     </div>

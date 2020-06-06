@@ -6,6 +6,8 @@ const app = express();
 const ejs = require("ejs");
 const mongoose=require("mongoose");
 const moment = require('moment');
+const jwt=require("jsonwebtoken");
+const auth=require("./auth");
 
 mongoose.connect("mongodb://localhost:27017/TMStenants",{useNewUrlParser:true,useUnifiedTopology:true});
 mongoose.set('useFindAndModify', false);
@@ -28,11 +30,13 @@ const tmsAdminSchema=new mongoose.Schema({
  }
 }); */
 
-let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+// let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname+"/public"));
+app.use(express.json());
+require('dotenv').config();
 
 var date = new Date();
 var dateStr = date.toString();
@@ -44,7 +48,7 @@ var justMonth = dateStr.substring(4, 7);
 
 app.get("/", function (req, res) {
 
-    res.render("login");
+    res.render("login",{authenticationIndicator:req.authenticated});
 });
 
 let embedRent={
@@ -93,7 +97,7 @@ const tmsTenantSchema=new mongoose.Schema({
     const Tenant=new mongoose.model("tenant",tmsTenantSchema);
 
 
-    app.get("/tenantRent/:ID", function (req, res) {
+    app.get("/tenantRent/:ID",auth, function (req, res) {
     const c=req.params.ID;
     
         Tenant.findOne({flatId:c},function(err,data){
@@ -118,7 +122,8 @@ const tmsTenantSchema=new mongoose.Schema({
                 fixedRent:data.agreedUponRent,
                 
                 paidAmount:data.rent[1],
-                pending: k
+                pending: k,
+                authenticationIndicator:req.authenticated
                 });
               
         
@@ -127,10 +132,10 @@ const tmsTenantSchema=new mongoose.Schema({
 });
 
 
-app.post("/tenantRent/:ID",function(req,res){
+app.post("/tenantRent/:ID",auth,function(req,res){
 const c=req.params.ID;
 const tempDate=new Date(req.body.paidOnDate);
-const r=tempDate.toLocaleDateString("en-US",options);
+//const r=tempDate.toLocaleDateString("en-US",options);
 // console.log(req.body.paymentStatus); 
 let tempPendingRent=0;
 
@@ -183,7 +188,7 @@ if(!err && (data.rent).length!==0){
 
 
 
-app.get("/tenantRent/delete/:ID/:month",function(req,res){
+app.get("/tenantRent/delete/:ID/:month",auth,function(req,res){
     const ID=Number(req.params.ID);
     const delMonth=req.params.month;
     Tenant.findOneAndUpdate({flatId:ID},{$pull:{rent:{month:delMonth}}},{new:true},function(err){
@@ -201,14 +206,14 @@ app.get("/tenantRent/delete/:ID/:month",function(req,res){
    
 });
 
-app.get("/tenantAddTable",function(req,res){ 
-    res.render("tenantAddTable");
+app.get("/tenantAddTable",auth,function(req,res){ 
+    res.render("tenantAddTable",{authenticationIndicator:req.authenticated});
 
 });
 
 
 
-app.post("/tenantAddTable",function(req,res){
+app.post("/tenantAddTable",auth,function(req,res){
     /* database commands go here */
     let newUser;
     let flat_type;
@@ -263,16 +268,6 @@ app.post("/tenantAddTable",function(req,res){
        });
   
                                                                    
-     /*   letRentFirstObj={
-           month: monthNames[d.getMonth()],
-           paidAmount:agreedRent,
-           pendingAmount:0,
-           rentPaymentStatus: "PAID"
-       };
-
-       Tenant.updateOne({flatId:ID},{$push:{rent:rentFIrstObj}});
- */
- 
  
 });
 
@@ -289,6 +284,18 @@ app.post("/", function (req, res) {
     Admin.findOne({username:adminName},function(err,data){
         if(!err){
             if(data.password===adminPass){
+                const admin={
+                    id:data._id,
+                    name:data.username,
+
+
+                };
+
+                const token=jwt.sign(admin,process.env.COOKIE_SECRET,{expiresIn: "20s"});
+                res.cookie("authCookie",token,{httpOnly:true});
+              
+
+               
             
             res.redirect("/allUsers");
            
@@ -305,19 +312,20 @@ app.post("/", function (req, res) {
 
 
 });
-app.get("/allUsers", function (req, res) {    
+app.get("/allUsers",auth, function (req, res) {    
     Tenant.find({},function(err,data) {
         if(err){
             console.log(err);
         }else{
            /*  console.log(data); */
-            res.render("allUsers",{receivedData:data});
+            res.render("allUsers",{receivedData:data,
+            authenticationIndicator:req.authenticated});
         }
    
 }).sort({flatId: 1});
 });
 
-app.post("/tenantBillFull/:ID", function (req, res) {
+app.post("/tenantBillFull/:ID",auth, function (req, res) {
     const c=(Number)(req.params.ID);
     /* console.log(req.body); */
     let billMonth= req.body.billingMonth;
@@ -363,7 +371,7 @@ Tenant.updateOne({flatId:c},{$push:{bill:insertBill}},function(err,data){
 
 
 
-app.get("/delete/:flatNo",function(req,res){
+app.get("/delete/:flatNo",auth,function(req,res){
     const c=req.params.flatNo;
 
     Tenant.findOne({flatId:c},function(err,data){
@@ -371,7 +379,8 @@ app.get("/delete/:flatNo",function(req,res){
             
     res.render(`deleteWarn`,{
         name:data.name,
-        flatID: data.flatId
+        flatID: data.flatId,
+        authenticationIndicator:req.authenticated
     });
         }
     });
@@ -381,7 +390,7 @@ app.get("/delete/:flatNo",function(req,res){
 
 });
 
-app.post("/deleteWarn/:flatNo",function(req,res){
+app.post("/deleteWarn/:flatNo",auth,function(req,res){
     const c=req.params.flatNo;
     let key=Number(req.body.uniqueKey);
 
@@ -420,7 +429,7 @@ app.post("/deleteWarn/:flatNo",function(req,res){
 }); 
 
 
-app.get("/tenantBillFull/:flatIDEjs", function (req, res) {
+app.get("/tenantBillFull/:flatIDEjs",auth, function (req, res) {
     
     const c2=(req.params.flatIDEjs);
   /*   console.log("data type of C2: "+typeof(c2)); */
@@ -437,8 +446,7 @@ app.get("/tenantBillFull/:flatIDEjs", function (req, res) {
         
                 }
             });
-        
-           
+
             /* console.log("THE VALUE OF C2: "+c2); */
            /*  console.log(data); */
              
@@ -446,7 +454,8 @@ app.get("/tenantBillFull/:flatIDEjs", function (req, res) {
             name:data.name,
             tenantID:data.flatId,
             receivedData:data,
-            k:k1
+            k:k1,
+            authenticationIndicator:req.authenticated
 
            } );
         }
@@ -464,6 +473,14 @@ app.post("/contact",function(req,res){
     console.log(req.body);
     res.send("Thank you for the message, you will receive the reply within the next working day!");
 });
+
+app.get("/logout",(req,res)=>{
+    res.cookie("authCookie","",{maxAge:0}).redirect("/");
+
+
+});
+
+
 
 app.listen(3000, function () {
     console.log("Server started on port 3000");
