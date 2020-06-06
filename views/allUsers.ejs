@@ -21,30 +21,35 @@
                 <% receivedData.forEach(function(dataItem){ %>
                 <tr>
                     <td><b><%= dataItem.flatId %> </b></td>
-                    <td>  <%= dataItem.name %>
+                    <td> <%= dataItem.name %>
                     </td>
-                        
-                        <td>
-                        <i class="fa fa-phone btn btn-sm btn-light edit-user" data-toggle="tooltip" data-placement="right" title="<%= dataItem.contact %>"></i>
-                        <i class="fa fa-id-badge btn btn-sm btn-light id-user" data-toggle="tooltip" data-placement="right" title="Aadhar: <%= dataItem.govIdentification %>"></i> 
-                        <a href="delete/<%=  dataItem.flatId %>"> <i  class="fas fa-trash btn btn-sm btn-danger del-user"></i></a> </td>
+
+                    <td>
+                        <i class="fa fa-phone btn btn-sm btn-light edit-user" data-toggle="tooltip"
+                            data-placement="right" title="<%= dataItem.contact %>"></i>
+                        <i class="fa fa-id-badge btn btn-sm btn-light id-user" data-toggle="tooltip"
+                            data-placement="right" title="Aadhar: <%= dataItem.govIdentification %>"></i>
+                        <a href="delete/<%=  dataItem.flatId %>"> <i
+                                class="fas fa-trash btn btn-sm btn-danger del-user"></i></a> </td>
                     </td>
-                            <td class="reducedDateFont"><% 
+                    <td class="reducedDateFont"><% 
                                 let options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' };                
                                 let t=(dataItem.startingDate).toLocaleDateString("en-US",options);
                                          
                                 %><b> <%=t%></b></td>
-                 
-                    <td><a href="tenantRent/<%=dataItem.flatId%>"><i class="fas fa-info-circle btn btn-sm btn-light"></i></a></td>
-                    <td><a href="tenantBillFull/<%=dataItem.flatId%>"><i class="fas fa-info-circle btn btn-sm btn-light "></i></a></td>
-                    </tr>
-                        <% }); %>
+
+                    <td><a href="tenantRent/<%=dataItem.flatId%>"><i
+                                class="fas fa-info-circle btn btn-sm btn-light"></i></a></td>
+                    <td><a href="tenantBillFull/<%=dataItem.flatId%>"><i
+                                class="fas fa-info-circle btn btn-sm btn-light "></i></a></td>
+                </tr>
+                <% }); %>
 
             </tbody>
         </table>
 
         <a class="btn btn-md btn-outline-warning add-user" href="tenantAddTable"> Add New Tenant</a>
-      
+
 
     </div>
 </div>

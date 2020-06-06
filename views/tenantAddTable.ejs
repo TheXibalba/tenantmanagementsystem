@@ -1,46 +1,48 @@
 <%- include("header") -%>
 <div class="outer-container-tenant-add-table">
-<div class="main-container">
-   <h2>Add a new Resident:</h2>
+   <div class="main-container">
+      <h2>Add a new Resident:</h2>
 
       <form action="tenantAddTable" method="POST">
-   <table class="table table-dark table-hover table-striped table-bordered users-table tableBodyScroll ">
-      <thead class="bg-info">
-          <tr>
-               <th>Flat No.</th> 
-              <th>Name</th>
-              <th>Gov. ID</th>
-              <th>Flat Type</th>
-              <th>Contact Details</th>
-              <th>Starting From</th>
-              <th>Rent Amount</th>
-            
-          </tr>
-      </thead>
-<tbody>
-<tr>
+         <table class="table table-dark table-hover table-striped table-bordered users-table tableBodyScroll ">
+            <thead class="bg-info">
+               <tr>
+                  <th>Flat No.</th>
+                  <th>Name</th>
+                  <th>Gov. ID</th>
+                  <th>Flat Type</th>
+                  <th>Contact Details</th>
+                  <th>Starting From</th>
+                  <th>Rent Amount</th>
 
-     <td> <input name="ID" class="form-control no-spin" type="number" placeholder="Flat no" required> </td>
-     <td> <input name="newTenantName" class="form-control" type="text" placeholder="Name" required > </td>
-     <td> <input name="govId" class="form-control" type="text" placeholder="Aadhaar No." required ></td>
-      <td>   <select class="dropdown form-control" name="newFlatType" required>
-         <option value="1 BHK">1 BHK</option>
-     
-     <option value="2 BHK">2 BHK</option>
-     </select>
-      </td>
-       <td><input name="newContact" class="form-control no-spin" type="number" placeholder="Contact No." required> </td>
-      
-       <td><input name="allocationDate" class="form-control" type="date" placeholder="Date" required></td>
-       <td>  <input name="rentAmount" class="form-control no-spin" type="number"  placeholder="Amount" required> </td>    
-        
-    
-    </tr>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
 
-   </tbody>
-   </table>
-   <input class="btn btn-md btn-outline-warning add-user" name="submit" type="submit" value="Add Tenant">
-</form>
+                  <td> <input name="ID" class="form-control no-spin" type="number" placeholder="Flat no" required> </td>
+                  <td> <input name="newTenantName" class="form-control" type="text" placeholder="Name" required> </td>
+                  <td> <input name="govId" class="form-control" type="text" placeholder="Aadhaar No." required></td>
+                  <td> <select class="dropdown form-control" name="newFlatType" required>
+                        <option value="1 BHK">1 BHK</option>
+
+                        <option value="2 BHK">2 BHK</option>
+                     </select>
+                  </td>
+                  <td><input name="newContact" class="form-control no-spin" type="number" placeholder="Contact No."
+                        required> </td>
+
+                  <td><input name="allocationDate" class="form-control" type="date" placeholder="Date" required></td>
+                  <td> <input name="rentAmount" class="form-control no-spin" type="number" placeholder="Amount"
+                        required> </td>
+
+
+               </tr>
+
+            </tbody>
+         </table>
+         <input class="btn btn-md btn-outline-warning add-user" name="submit" type="submit" value="Add Tenant">
+      </form>
+   </div>
 </div>
-</div>
-   <%- include("footer") -%>
+<%- include("footer") -%>
