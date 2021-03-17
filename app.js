@@ -9,7 +9,7 @@ const moment = require('moment');
 const jwt = require("jsonwebtoken");
 const auth = require("./auth");
 
-mongoose.connect(`mongodb+srv://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@cluster0.ia2jk.mongodb.net/autodogg?retryWrites=true&w=majority`, {
+mongoose.connect(`mongodb+srv://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@cluster0.ia2jk.mongodb.net/TMSTenants?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 
@@ -33,19 +33,19 @@ const tmsAdminSchema = new mongoose.Schema({
     password: String
 });
 
-const Admin = new mongoose.model("admin", tmsAdminSchema);
+/* const Admin = new mongoose.model("admin", tmsAdminSchema);
 const newAdmin = new Admin({
     username: process.env.EMAIL_ID,
     password: process.env.PASSWORD
-});
+}); */
 
-/*  newAdmin.save(function(err){
+ newAdmin.save(function(err){
  if(err){
      console.log(err);
  }else{
      console.log("admin has been created successfully!");
  }
-});   */
+});   
 
 
 app.use(bodyParser.urlencoded({
