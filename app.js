@@ -21,17 +21,17 @@ const tmsAdminSchema = new mongoose.Schema({
 
 const Admin = new mongoose.model("admin", tmsAdminSchema);
 const newAdmin = new Admin({
-    username: "yurajpawar99@gmail.com",
-    password: "123"
+    username: process.env.EMAIL_ID,
+    password: process.env.PASSWORD
 });
 
-/* newAdmin.save(function(err){
+/*  newAdmin.save(function(err){
  if(err){
      console.log(err);
  }else{
      console.log("admin has been created successfully!");
  }
-}); */
+});   */
 
 
 app.use(bodyParser.urlencoded({

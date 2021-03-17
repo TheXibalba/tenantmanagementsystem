@@ -2,12 +2,9 @@
 
 console.log("javascript is running fine!");
 
-
-
 $(function () {
   $('[data-toggle="tooltip"]').tooltip();
 });
-
 
 let fixedRent = document.getElementById("fixedRent");
 let paidAmount = document.getElementById("paidAmount");
@@ -17,7 +14,6 @@ let rentMonth = document.getElementById("rentMonth");
 let total = 0;
 let temp = 0;
 let rentPaymentStatus = document.getElementById("rentPaymentStatus");
-
 
 if (pendingAmount.length != 0) {
   temp = (Number(((pendingAmount[pendingAmount.length - 1]).innerHTML).split(" ")[1]));

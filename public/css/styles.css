@@ -87,10 +87,17 @@ body {
 .outer-container-login {
   background-image: url("../images/landing.jpg");
   background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   text-align: center;
   width: 100vw;
   height: 100vh;
+}
+
+.outer-container-login .container{
+  margin-left: 0;
 }
 
 .outer-container-contact {
@@ -100,6 +107,12 @@ body {
   background-size: cover;
   width: 100vw;
   height: 100vh;
+}
+
+.outer-container-contact .container{
+  
+  margin: 12% 0 0 20%;
+  
 }
 
 .outer-container-allusers {
