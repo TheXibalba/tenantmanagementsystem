@@ -542,6 +542,6 @@ app.get("/logout", (req, res) => {
 app.get('/*', function (req, res) {
     res.sendStatus(404);
 });
-app.listen(3000 || process.env.PORT, function () {
-    console.log("Server started on port 3000");
+app.listen(process.env.PORT, function () {
+    console.log("Server started on port "+ process.env.PORT);
 });
